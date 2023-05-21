@@ -1,0 +1,9 @@
+project\bsp_common.o: ..\BSP_Device\COMMON\bsp_common.c
+project\bsp_common.o: ..\BSP_Device\COMMON/bsp_common.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdint.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdbool.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdio.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\string.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\ctype.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdlib.h
+project\bsp_common.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdarg.h
