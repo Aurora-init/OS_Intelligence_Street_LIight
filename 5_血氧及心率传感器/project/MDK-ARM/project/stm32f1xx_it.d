@@ -26,9 +26,12 @@ project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc.h
+project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc_ex.h
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+project\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_wwdg.h
 project\stm32f1xx_it.o: ../Core/Inc/stm32f1xx_it.h
 project\stm32f1xx_it.o: ..\BSP_Device\ESP/bsp_esp01s.h
 project\stm32f1xx_it.o: ..\BSP_Device\COMMON/bsp_headfile.h
@@ -47,8 +50,10 @@ project\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue
 project\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 project\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 project\stm32f1xx_it.o: ../Core/Inc/i2c.h
+project\stm32f1xx_it.o: ../Core/Inc/rtc.h
 project\stm32f1xx_it.o: ../Core/Inc/usart.h
 project\stm32f1xx_it.o: ../Core/Inc/gpio.h
+project\stm32f1xx_it.o: ../Core/Inc/wwdg.h
 project\stm32f1xx_it.o: ..\BSP_Device\COMMON/bsp_common.h
 project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdio.h
@@ -56,3 +61,10 @@ project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\string.h
 project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\ctype.h
 project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdlib.h
 project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdarg.h
+project\stm32f1xx_it.o: ..\BSP_Device\MAX30102/bsp_max30102.h
+project\stm32f1xx_it.o: ..\BSP_Device\MAX30102/bsp_max30102_fir.h
+project\stm32f1xx_it.o: ..\BSP_Device\./math/arm_const_structs.h
+project\stm32f1xx_it.o: ..\BSP_Device\./math/arm_math.h
+project\stm32f1xx_it.o: ../Drivers/CMSIS/Include/core_cm3.h
+project\stm32f1xx_it.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\math.h
+project\stm32f1xx_it.o: ..\BSP_Device\./math/arm_common_tables.h

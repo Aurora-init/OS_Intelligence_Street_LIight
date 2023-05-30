@@ -44,6 +44,8 @@ extern "C" {
 /* USER CODE BEGIN EC */
 extern float LIGH_OneNET_buf;
 extern uint8_t LEDS_OneNET_buf;
+
+extern uint8_t FeedDog_Flag;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -59,12 +61,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define MAX30102_INT_Pin GPIO_PIN_0
+#define MAX30102_INT_GPIO_Port GPIOC
+#define MAX30102_INT_EXTI_IRQn EXTI0_IRQn
 #define D4_Pin GPIO_PIN_2
 #define D4_GPIO_Port GPIOC
 #define D5_Pin GPIO_PIN_3
 #define D5_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */
-
+#define FeedDog     1
+#define NoFeedDog   0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

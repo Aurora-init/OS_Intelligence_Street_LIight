@@ -43,11 +43,16 @@ project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc.h
+project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc_ex.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+project\bsp_esp01s.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_wwdg.h
+project\bsp_esp01s.o: ../Core/Inc/rtc.h
 project\bsp_esp01s.o: ../Core/Inc/usart.h
 project\bsp_esp01s.o: ../Core/Inc/gpio.h
+project\bsp_esp01s.o: ../Core/Inc/wwdg.h
 project\bsp_esp01s.o: ..\BSP_Device\COMMON/bsp_common.h
 project\bsp_esp01s.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\bsp_esp01s.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdio.h

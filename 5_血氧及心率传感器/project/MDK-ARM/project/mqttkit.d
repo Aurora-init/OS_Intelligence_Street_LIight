@@ -43,11 +43,16 @@ project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc.h
+project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rtc_ex.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+project\mqttkit.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_wwdg.h
+project\mqttkit.o: ../Core/Inc/rtc.h
 project\mqttkit.o: ../Core/Inc/usart.h
 project\mqttkit.o: ../Core/Inc/gpio.h
+project\mqttkit.o: ../Core/Inc/wwdg.h
 project\mqttkit.o: ..\BSP_Device\COMMON/bsp_common.h
 project\mqttkit.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\mqttkit.o: D:\KEIL_V5\ARM\ARMCC\Bin\..\include\stdio.h

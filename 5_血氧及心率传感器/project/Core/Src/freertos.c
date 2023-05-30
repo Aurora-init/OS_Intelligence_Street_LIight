@@ -26,12 +26,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usart.h"
-#include <string.h>
 #include "BH1750/bsp_bh1750.h"
 #include "ESP/bsp_esp01s.h"
 #include "ONENET/onenet.h"
 #include "MQTT/MqttKit.h"
+#include "MAX30102/bsp_max30102.h"
+#include "MAX30102/bsp_max30102_fir.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,13 +51,29 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+RTC_DateTypeDef GetData;  	//获取日期结构体
+RTC_TimeTypeDef GetTime;   	//获取时间结构体
+
+uint8_t FeedDog_Flag = 0;
+
 float LIGH_OneNET_buf;
 uint8_t LEDS_OneNET_buf;
+
+static volatile uint8_t flagTimer01Run = 0;
+
+uint8_t max30102_int_flag = 0; // 中断标志
+float ppg_data_cache_RED[CACHE_NUMS] = {0}; // 缓存区
+float ppg_data_cache_IR[CACHE_NUMS] = {0};  // 缓存区
+uint16_t cache_counter = 0; // 缓存计数器
+
+uint16_t HeartRateold = 0;
+
 /* USER CODE END Variables */
 osThreadId BH1750_TaskHandle;
 osThreadId LED_TASKHandle;
 osThreadId INFO_TaskHandle;
 osThreadId OneNETTaskHandle;
+osThreadId MAX30102_TaskHandle;
 osMessageQId myQueue01Handle;
 osMessageQId myQueue02Handle;
 osTimerId myTimer01Handle;
@@ -72,6 +88,7 @@ void BH1750Task(void const * argument);
 void LEDTask(void const * argument);
 void INFOTask(void const * argument);
 void OneNET_Task(void const * argument);
+void MAX30102Task(void const * argument);
 void Timer01_Callback(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -137,6 +154,7 @@ void MX_FREERTOS_Init(void) {
   myTimer01Handle = osTimerCreate(osTimer(myTimer01), osTimerPeriodic, NULL);
 
   /* USER CODE BEGIN RTOS_TIMERS */
+	osTimerStart(myTimer01Handle,20000);							//10000代表回调函数回调周期
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
@@ -170,6 +188,10 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(OneNETTask, OneNET_Task, osPriorityNormal, 0, 128);
   OneNETTaskHandle = osThreadCreate(osThread(OneNETTask), NULL);
 
+  /* definition and creation of MAX30102_Task */
+  osThreadDef(MAX30102_Task, MAX30102Task, osPriorityAboveNormal, 0, 128);
+  MAX30102_TaskHandle = osThreadCreate(osThread(MAX30102_Task), NULL);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -186,9 +208,9 @@ void MX_FREERTOS_Init(void) {
 void BH1750Task(void const * argument)
 {
   /* USER CODE BEGIN BH1750Task */
-	float LIGH = 0;
-	uint8_t opecode;
-	int dis_data = 0;
+	float LIGH = 0;							
+	uint8_t opecode;																									
+	int dis_data = 0;																								
 	uint8_t DATA_BUF[8] = { 0 };
 	
 	Init_BH1750();
@@ -199,25 +221,25 @@ void BH1750Task(void const * argument)
 		opecode = 0x01;
 		if ( I2C_BH1750_Opecode_Write(&opecode, 1) != HAL_OK){
 			printf("I2C_BH1750_Opecode_Write: %2x Error\n", opecode);
-			continue;
+			return;
 		}
 		opecode = 0x10;
 		if ( I2C_BH1750_Opecode_Write(&opecode, 1) != HAL_OK){
 			printf("I2C_BH1750_Opecode_Write: %2x Error\n", opecode);
-			continue;
+			return;
 		}
 		HAL_Delay(200);	
 		if ( I2C_BH1750_Data_Read(DATA_BUF, 2) != HAL_OK){
 			printf("I2C_BH1750_Data_Read:  Error\n");
-			continue;
+			return;
 		}
 		dis_data =(DATA_BUF[0]);
 		dis_data=(dis_data<<8)+ (DATA_BUF[1]);														//合成数据
 		LIGH=(float)dis_data/1.2;
 		LIGH_OneNET_buf = LIGH;																						//将光照强度数据放入onenet的数据缓冲区中
-		xQueueSendToFront(myQueue01Handle,&LIGH,portMAX_DELAY);
+		xQueueSendToFront(myQueue01Handle,&LIGH,portMAX_DELAY);						//myQueue01消息队列用于BH1750Task与LEDTask进行数据交换
 		
-		osDelay(1);
+		osDelay(2000);
   }
   /* USER CODE END BH1750Task */
 }
@@ -258,7 +280,7 @@ void LEDTask(void const * argument)
 			}
 		}
 		LEDS_OneNET_buf = LED_FLAG;
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END LEDTask */
 }
@@ -286,7 +308,7 @@ void INFOTask(void const * argument)
 			printf("\r\nLED OFF\r\n");
 			LED_FLAG = NULL;
 		}
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END INFOTask */
 }
@@ -321,15 +343,73 @@ void OneNET_Task(void const * argument)
 		if(dataPtr != NULL)
 		OneNet_RevPro(dataPtr);
 		
-    osDelay(1);
+    osDelay(100);
   }
   /* USER CODE END OneNET_Task */
+}
+
+/* USER CODE BEGIN Header_MAX30102Task */
+/**
+* @brief Function implementing the MAX30102_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_MAX30102Task */
+void MAX30102Task(void const * argument)
+{
+  /* USER CODE BEGIN MAX30102Task */
+	uint16_t HeartRate = 0;
+	float SpO2 = 0;
+	float max30102_data[2], fir_output[2];
+	
+	max30102_init();
+  max30102_fir_init();
+	
+  printf("Max30102 Init\tOK\r\n");
+	
+  /* Infinite loop */
+  for(;;)
+  {
+		if(MAX30102_Get_DATA(&HeartRate,&SpO2,max30102_data,fir_output) == MAX30102_DATA_OK)
+		{
+			
+			printf("\r\n心率：%d次/min\r\n"	, HeartRate); //当前的心率打印出来
+			if(HeartRate-HeartRateold>=50)
+			{
+				printf("\r\n压力好大\r\n"); //当前的压力
+			}
+			else if(HeartRate-HeartRateold<50&&HeartRate-HeartRateold>30)
+			{
+				printf("\r\n压力正常\r\n"); //当前的压力
+			}
+			else
+			{
+				printf("\r\n完全没压力\r\n"); //当前的压力
+			}
+			HeartRateold = HeartRate;
+			printf("血氧：%.2f%%\r\n"		, SpO2);
+		}
+    osDelay(1);
+  }
+  /* USER CODE END MAX30102Task */
 }
 
 /* Timer01_Callback function */
 void Timer01_Callback(void const * argument)
 {
   /* USER CODE BEGIN Timer01_Callback */
+	HAL_RTC_GetTime(&hrtc, &GetTime, RTC_FORMAT_BIN);
+	/* Get the RTC current Date */
+	HAL_RTC_GetDate(&hrtc, &GetData, RTC_FORMAT_BIN);
+
+	if (FeedDog_Flag == FeedDog)
+	{
+		FeedDog_Flag = NoFeedDog;
+		
+		printf("\r\n%02d/%02d/%02d\r\n",2000 + GetData.Year, GetData.Month, GetData.Date);
+
+		printf("%02d:%02d:%02d\r\n",GetTime.Hours, GetTime.Minutes, GetTime.Seconds);
+	}
   /* USER CODE END Timer01_Callback */
 }
 

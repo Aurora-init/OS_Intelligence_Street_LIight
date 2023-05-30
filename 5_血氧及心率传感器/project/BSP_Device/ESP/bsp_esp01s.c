@@ -221,32 +221,32 @@ void ESP8266_Init(void)
 	__HAL_UART_ENABLE_IT(&huart2,UART_IT_RXNE);
 	ESP8266_Clear();
 	
-	UsartPrintf(&huart1, "0. AT\r\n");
+//	UsartPrintf(&huart1, "\r\n0. AT\r\n");
 	while(ESP8266_SendCmd("AT\r\n", "OK"))
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "1. RST\r\n");
+	UsartPrintf(&huart1, "\r\n1. RST\r\n");
 	ESP8266_SendCmd("AT+RST\r\n", "");
 	HAL_Delay(200);
 	
 	ESP8266_SendCmd("AT+CIPCLOSE\r\n", "");
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "2. CWMODE\r\n");
+	UsartPrintf(&huart1, "\r\n2. CWMODE\r\n");
 	while(ESP8266_SendCmd("AT+CWMODE=1\r\n", "OK"))
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "3. AT+CWDHCP\r\n");
+	UsartPrintf(&huart1, "\r\n3. AT+CWDHCP\r\n");
 	while(ESP8266_SendCmd("AT+CWDHCP=1,1\r\n", "OK"))
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "4. CWJAP\r\n");
+	UsartPrintf(&huart1, "\r\n4. CWJAP\r\n");
 	while(ESP8266_SendCmd(ESP8266_WIFI_INFO, "GOT IP"))
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "5. CIPSTART\r\n");
+	UsartPrintf(&huart1, "\r\n5. CIPSTART\r\n");
 	while(ESP8266_SendCmd(ESP8266_ONENET_INFO, "CONNECT"))
 	HAL_Delay(200);
 	
-	UsartPrintf(&huart1, "6. ESP8266 Init OK\r\n");
+	UsartPrintf(&huart1, "\r\n6. ESP8266 Init OK\r\n");
 }

@@ -48,21 +48,21 @@ ARM Macro Assembler    Page 1
    30 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
    31 00000000         ; </h>
    32 00000000         
-   33 00000000 00000400 
+   33 00000000 00000800 
                        Stack_Size
-                               EQU              0x00000400
+                               EQU              0x00000800
    34 00000000         
    35 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
 =3
    36 00000000         Stack_Mem
                                SPACE            Stack_Size
-   37 00000400         __initial_sp
-   38 00000400         
-   39 00000400         ; <h> Heap Configuration
-   40 00000400         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-   41 00000400         ; </h>
-   42 00000400         
-   43 00000400 00000200 
+   37 00000800         __initial_sp
+   38 00000800         
+   39 00000800         ; <h> Heap Configuration
+   40 00000800         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   41 00000800         ; </h>
+   42 00000800         
+   43 00000800 00000200 
 
 
 
@@ -71,8 +71,8 @@ ARM Macro Assembler    Page 2
 
                        Heap_Size
                                EQU              0x00000200
-   44 00000400         
-   45 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+   44 00000800         
+   45 00000800                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    46 00000000         __heap_base
    47 00000000         Heap_Mem
@@ -547,10 +547,10 @@ ARM Macro Assembler    Page 9
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=project\startup_stm32f103xe.d -oproject\startup_stm32f103xe.o -I..
 \Core\Inc -I.\RTE\_project -ID:\KEIL_pack\ARM\CMSIS\5.5.1\CMSIS\Core\Include -I
-D:\KEIL_pack\Keil\STM32F1xx_DFP\2.3.0\Device\Include --predefine="__MICROLIB SE
-TA 1" --predefine="__UVISION_VERSION SETA 528" --predefine="_RTE_ SETA 1" --pre
-define="STM32F10X_HD SETA 1" --list=./project/\startup_stm32f103xe.lst startup_
-stm32f103xe.s
+D:\KEIL_pack\ARM\CMSIS\5.5.1\CMSIS\DSP\Include -ID:\KEIL_pack\Keil\STM32F1xx_DF
+P\2.3.0\Device\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_V
+ERSION SETA 528" --predefine="_RTE_ SETA 1" --predefine="STM32F10X_HD SETA 1" -
+-list=./project/\startup_stm32f103xe.lst startup_stm32f103xe.s
 
 
 
@@ -573,7 +573,7 @@ Symbol: Stack_Mem
    Uses
       None
 Comment: Stack_Mem unused
-__initial_sp 00000400
+__initial_sp 00000800
 
 Symbol: __initial_sp
    Definitions
@@ -1382,7 +1382,7 @@ Symbol: Heap_Size
    Uses
       At line 47 in file startup_stm32f103xe.s
 Comment: Heap_Size used once
-Stack_Size 00000400
+Stack_Size 00000800
 
 Symbol: Stack_Size
    Definitions
